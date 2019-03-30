@@ -1,14 +1,17 @@
-#!/usr/bin/python3
+# fileencoding: utf-8
 # read content from gfwlist url and generate a foxproxy configuation file with it
 
-import requests
+import urllib2
 import base64
 import re
 
 def parse():
 	url = "https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt"
-	resp = requests.get(url)
-	rules = base64.b64decode(resp.content).decode()
+	rules = base64.b64decode(
+		urllib2.urlopen(
+			urllib2.Request(url)
+		).read()
+	).decode()
 	for line in re.findall("([^\n]+)", rules):
 		if line.find("[") >= 0:
 			continue
@@ -22,7 +25,7 @@ def parse():
 
 		obj = re.search("([^|@]+)", line)
 		if obj:
-			yield obj.group()
+			yield str(obj.group())
 
 def join():
 	text = None
@@ -30,13 +33,13 @@ def join():
 		text = f.read()
 		f.close()
 
-	buff = ["""{
+	buff = [str("""{
 			"title": "✧(๑•̀ㅂ•́)و✧",
 			"active": true,
 			"pattern": "%s",
 			"type": 1,
 			"protocols": 1
-		}""" % rule
+		}""") % rule
 		for rule in parse()
 	]
 

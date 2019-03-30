@@ -39,13 +39,6 @@
           "pattern": "^(?:[^:@/]+(?::[^@/]+)?@)?[\\w-]+(?::\\d+)?(?:/.*)?$",
           "type": 2,
           "protocols": 1
-        },
-        {
-          "title": "Baidu",
-          "active": true,
-          "pattern": "*.baidu*",
-          "type": 1,
-          "protocols": 1
         }
       ],
       "id": "dsn6b1551671318676"
